@@ -1,2 +1,2 @@
 # AngularApiStudyNote
-look and study Angular Api
+学习 Angular Api 1.4.4
