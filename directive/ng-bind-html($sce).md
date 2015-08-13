@@ -3,6 +3,25 @@
 
 > **注意事项：** 用该指令bind内容时，必须依赖ngSanitize模块，同时调用$sce.trustAsHtml等方法，否则会出现 `Attempting to use an unsafe value in a safe context.` 异常
 
+## ng-bind-html源码
+**注意：** 可以发现内部是调用的`$sce.getTrustedHtml` 方法
+```js
+var ngBindHtmlDirective = ['$sce', function($sce) {
+  return function(scope, element, attr) {
+    element.addClass('ng-binding').data('$binding', attr.ngBindHtml);
+    scope.$watch(attr.ngBindHtml, function ngBindHtmlWatchAction(value) {
+      element.html($sce.getTrustedHtml(value) || '');
+    });
+  };
+}];
+```
+
+## trustAs Vs getTrusted
+理解不是透彻，先把想法写一下
+
+- **trustAs** 参数是信任内容，调用该方法后会得到一个继承自TrustedValueHolderType对象的对象包裹住真正的内容，该对象须调用getTrusted才可得到包装的内容
+- **getTrusted** 参数是包裹内容的trusted对象或者是普通内容，如果是trusted内容则不会做过多处理，如果是普通内容则按照一定的规则删除不信任的内容，该规则可自定义（详情参见[`$sceDelegateProvider`](https://docs.angularjs.org/api/ng/provider/$sceDelegateProvider))
+
 ## 官方代码Code
 ```html
 <div ng-controller="AppController as myCtrl">
