@@ -64,5 +64,73 @@ angular.module('mySceApp', ['ngSanitize'])
 ]
 ```
 
+## 完整代码例子
+```html
+<!DOCTYPE html>
+<html ng-app="bindSceModule">
+
+<head>
+    <title>ng-bind-html--$sce</title>
+    <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript">
+    angular.module('bindSceModule', ['ngSanitize'])
+        .controller('SceController', ['$scope', '$sce', '$http', '$templateCache',
+            function($scope, $sce, $http, $templateCache) {
+                var self = this;
+                $http.get('../data/test_sce.json').success(function(result) {
+                    self.comments = result;
+                });
+
+                var html = '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
+                    'sanitization.&quot;">Hover over this text.</span>';
+
+                self.html = html;
+                self.trustedHtml = $sce.getTrustedHtml(html);
+                self.explictTrustedHtml = $sce.trustAsHtml(html);
+                self.myTrustedHtml = $sce.getTrustedHtml(self.explictTrustedHtml);
+            }
+        ])
+        .directive('ngBindHtmlSafe', ['$compile', function($compile) {
+
+            return {
+                link: function(scope, element, attrs, controller) {
+                    var compile = function(html) {
+                        var htmlDom = $compile(html)(scope);
+                        element.html('').append(htmlDom);
+                    };
+
+                    var htmlName = attrs.ngBindHtmlSafe;
+
+                    scope.$watch(htmlName, function(newHtml) {
+                        if (!newHtml) return;
+                        compile(newHtml);
+                    });
+                }
+            };
+        }]);
+    </script>
+</head>
+
+<body ng-controller="SceController as sceCtrl">
+    <i ng-bind-html="sceCtrl.explictTrustedHtml"></i>
+    <br>
+    <i ng-bind-html="sceCtrl.trustedHtml"></i>
+    <br>
+    <i ng-bind-html="sceCtrl.html"></i>
+    <br>
+    <i ng-bind-html-safe="sceCtrl.myTrustedHtml"></i>
+    <br>
+    <div ng-repeat="comment in sceCtrl.comments">
+        <b>{{comment.name}}</b>
+        <span ng-bind-html="comment.htmlComment"></span>
+        <br>
+    </div>
+</body>
+
+</html>
+
+```
+
 ------------
 > Written with [StackEdit](https://stackedit.io/).
