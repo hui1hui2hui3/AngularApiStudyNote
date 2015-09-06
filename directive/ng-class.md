@@ -2,11 +2,17 @@
 # ng-class学习笔记
 [TOC]
 
-> 解析表达式expression的三种方式：
-> > 1.  如果expression是string，则用1个或多个空格风格class names（If the expression evaluates to a string, the string should be one or more space-delimited class names.）, 比如：ng-class="expression"
-> 2. 如果expression是object, 则key-value形式的对应关系，如果value为true,则应用key作为class类名, 比如（{'red': isImportant,'bold':isBold}）
-> 3. 如果expression是array, 则数组的元素可以是类型1的string或类型2的object, 可以混用, 比如：[expression1,expression2]
-> 4.  还有一种方式是 expression ? 'class1' : 'class2'
+> 解析表达式expression的5种方式：
+> > 1.  **String Syntax** 
+> 如果expression是string，则用1个或多个空格风格class names（If the expression evaluates to a string, the string should be one or more space-delimited class names.）, 比如：ng-class="expression"
+> 2. **Map Syntax**
+> 如果expression是object, 则key-value形式的对应关系，如果value为true,则应用key作为class类名, 比如（{'red': isImportant,'bold':isBold}）
+> 3. **Array Syntax**
+> 如果expression是array, 则数组的元素可以是类型1的string或类型2的object, 可以混用, 比如：[expression1,expression2]
+> 4.  **Expression Syntax**
+> 方式： expression ? 'class1' : 'class2'
+> 5. **Select Map Syntax**
+> 方式比如： {true: 'has-error',false:'has-normal'}[isError], 注意这里的Map形式和第二种的Map相反
 
 **参考链接：[How to use ng-class](https://scotch.io/tutorials/the-many-ways-to-use-ngclass#ngclass-using-the-ternary-operator)**
 
