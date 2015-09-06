@@ -12,7 +12,7 @@
 > 4.  **Expression Syntax**
 > 方式： expression ? 'class1' : 'class2'
 > 5. **Select Map Syntax**
-> 方式比如： {true: 'has-error',false:'has-normal'}[isError], 注意这里的Map形式和第二种的Map相反
+> 方式比如： {true: 'has-error',false:'has-normal'}[isError], 注意这里的Map形式和第二种的Map相反, 另外需要注意的是isError必须===true 或者 false，不能是undefined | null，否则无法显示样式
 
 **参考链接：[How to use ng-class](https://scotch.io/tutorials/the-many-ways-to-use-ngclass#ngclass-using-the-ternary-operator)**
 
